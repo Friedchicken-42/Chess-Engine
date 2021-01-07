@@ -1,4 +1,4 @@
-#include "dll.h"
+#include "engine.h"
 
 EXPORT char rule(char *board, Pos curr, Pos *moves, char *offset) {
     if (board[curr.y * 8 + curr.x] & 1) {

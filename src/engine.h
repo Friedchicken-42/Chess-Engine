@@ -48,7 +48,7 @@ enum {
     MOVED = 1 << 5,
 } Type;
 
-void load_rulesets();
+uint load_rulesets(RULE *ruleset);
 char calculate_moves(char *board, Pos curr, void *ruleset, Pos *moves, char *offset);
 char check_position(char *board, Pos p);
 

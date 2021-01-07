@@ -1,5 +1,6 @@
 #include "engine.h"
 
+#include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,19 +10,57 @@ char check_position(char *board, Pos p) {
     return 0;
 }
 
-void load_rulesets() {
-    RULE ruleset[100];
-    uint offset;
-    offset = 0;
+RULE load_ruleset(char filename[1024]) {
+    RULE current;
 
 #if defined(_WIN32)
-    HMODULE hDll = LoadLibrary(".dynamic_ruleset/pawn_move.dll");
-    if (hDll == NULL) return;
-    ruleset[0] = (RULE)GetProcAddress(hDll, "rule");
+    HMODULE hDll = LoadLibrary(filename);
+    if (hDll == NULL) {
+        printf(" FileNotFound");
+        return NULL;
+    }
+    current = (RULE)GetProcAddress(hDll, "rule");
 
 #elif defined(__linux__)
-
 #endif
+    return current;
+}
+
+uint load_rulesets(RULE *ruleset) {
+    RULE current_rule;
+    uint offset;
+    DIR *d;
+    struct dirent *ruleset_file;
+    char filename[1024];
+
+    offset = 0;
+
+    d = opendir(".dynamic_ruleset");
+    if (d == NULL) {
+        printf("folder not found\n");
+        return 0;
+    }
+
+    printf("loading rulesets:\n");
+
+    while ((ruleset_file = readdir(d)) != NULL) {
+        if (ruleset_file->d_namlen > 2) {
+            strcpy(filename, ".dynamic_ruleset/");
+            strcat(filename, ruleset_file->d_name);
+
+            printf("[     ] %s", filename);
+            current_rule = load_ruleset(filename);
+
+            if (current_rule != NULL) {
+                printf("\r[load ] %s\n", filename);
+                ruleset[offset] = current_rule;
+                offset++;
+            } else {
+                printf("\r[error] %s\n", filename);
+            }
+        }
+    }
+    return offset;
 }
 
 char calculate_moves(char *board, Pos curr, void *ruleset, Pos *moves, char *offset) {

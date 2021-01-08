@@ -6,3 +6,10 @@ dll: .dynamic_ruleset
 
 .dynamic_ruleset:
 	mkdir .dynamic_ruleset
+
+git:
+	git add ./main.c ./src/* ./ruleset/* ./Makefile
+	git status -uno
+
+commit: git
+	git commit -m '$(message)'

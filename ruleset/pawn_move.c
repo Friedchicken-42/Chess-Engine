@@ -3,6 +3,7 @@
 EXPORT char rule(char *board, Pos curr, Pos *moves, char *offset) {
     uint position;
     position = curr.y * 8 + curr.x;
+    curr.piece_eat = EMPTY;
 
     if ((board[position] & PIECE) == PAWN) {
         if (board[position] & WHITE) {
@@ -11,8 +12,7 @@ EXPORT char rule(char *board, Pos curr, Pos *moves, char *offset) {
             curr.y += 1;
         }
         if (check_position(board, curr) == 0 && (board[curr.y * 8 + curr.x] & FULL) == 0) {
-            moves[*offset].x = curr.x;
-            moves[*offset].y = curr.y;
+            memcpy(&moves[*offset], &curr, sizeof(Pos));
             (*offset)++;
         }
     }

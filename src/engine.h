@@ -16,6 +16,7 @@ typedef struct Position Pos;
 struct Position {
     char x;
     char y;
+    char piece_eat;
 };
 
 #if defined(_WIN32)

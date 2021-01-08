@@ -26,7 +26,7 @@ int main(int argc, char const *argv[]) {
 
     for (i = 0; i < n_moves; i++) {
         board[moves[i].y * 8 + moves[i].x] = AVAIABLE;
-        printf("\t(%d %d)\n", moves[i].x, moves[i].y);
+        printf("\t(%d %d) eat: [%2d]\n", moves[i].x, moves[i].y, moves[i].piece_eat & PIECE);
     }
     print_avaiable(board, moves, n_moves);
 

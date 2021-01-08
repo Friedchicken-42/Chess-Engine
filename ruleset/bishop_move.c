@@ -14,11 +14,12 @@ EXPORT char rule(char *board, Pos curr, Pos *moves, char *offset) {
                 if ((board[position.y * 8 + position.x] & FULL) == (board[curr.y * 8 + curr.x] & FULL)) {
                     stopped = 1;
                 } else {
-                    memcpy(&moves[*offset], &position, sizeof(Pos));
-                    (*offset)++;
+                    position.piece_eat = board[position.y * 8 + position.x];
                     if (board[position.y * 8 + position.x] != EMPTY) {
                         stopped = 1;
                     }
+                    memcpy(&moves[*offset], &position, sizeof(Pos));
+                    (*offset)++;
                     position.x += direction[i].x;
                     position.y += direction[i].y;
                 }

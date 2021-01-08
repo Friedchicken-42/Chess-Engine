@@ -17,7 +17,9 @@ EXPORT char rule(char *board, Pos curr, Pos *moves, char *offset) {
             }
             p.x = curr.x + side_pos[i];
             if (check_position(board, p) == 0) {
+                p.piece_eat = EMPTY;
                 if (board[position] & WHITE && board[p.y * 8 + p.x] & BLACK || board[position] & BLACK && board[p.y * 8 + p.x] & WHITE) {
+                    p.piece_eat = board[p.y * 8 + p.x];
                     memcpy(&moves[*offset], &p, sizeof(Pos));
                     (*offset)++;
                 }

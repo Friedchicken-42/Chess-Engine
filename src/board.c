@@ -62,3 +62,23 @@ void print_board(char *board) {
         printf("\n");
     }
 }
+
+void print_avaiable(char *board, Pos *moves, uint n_moves) {
+    char *new_board;
+    uint i, j;
+    new_board = malloc(64);
+
+    memcpy(new_board, board, 64);
+
+    for (i = 0; i < n_moves; i++) {
+        new_board[moves[i].y * 8 + moves[i].x] |= AVAIABLE;
+    }
+    for (i = 0; i < 8; i++) {
+        for (j = 0; j < 8; j++) {
+            printf("%2c", (board[i * 8 + j] & AVAIABLE) ? 'x' : '.');
+        }
+        printf("\n");
+    }
+
+    free(new_board);
+}

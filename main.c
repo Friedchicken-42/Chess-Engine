@@ -8,11 +8,12 @@ int main(int argc, char const *argv[]) {
     Pos *moves, current;
     char i;
     char n_moves = 0;
-    current.x = 1;
-    current.y = 6;
+    current.x = 3;
+    current.y = 3;
 
     board = create_board();
     print_board(board);
+    board[current.y * 8 + current.x] = WHITE | QUEEN;
 
     // void (*ruleset[100])(char *, Pos, Pos, char *);
     RULE ruleset[100];
@@ -27,5 +28,7 @@ int main(int argc, char const *argv[]) {
         board[moves[i].y * 8 + moves[i].x] = AVAIABLE;
         printf("\t(%d %d)\n", moves[i].x, moves[i].y);
     }
+    print_avaiable(board, moves, n_moves);
+
     return 0;
 }

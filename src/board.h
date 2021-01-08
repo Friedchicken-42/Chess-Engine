@@ -8,5 +8,6 @@
 
 char *create_board();
 void print_board(char *board);
+void print_avaiable(char *board, Pos *moves, uint n_moves);
 
 #endif

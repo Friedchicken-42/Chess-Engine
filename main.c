@@ -5,30 +5,27 @@
 
 int main(int argc, char const *argv[]) {
     char *board;
-    board = create_board();
-    print_board(board);
-
-    Pos moves[100], current;
+    Pos *moves, current;
     char i;
     char n_moves = 0;
     current.x = 1;
-    current.y = 1;
+    current.y = 6;
+
+    board = create_board();
+    print_board(board);
 
     // void (*ruleset[100])(char *, Pos, Pos, char *);
     RULE ruleset[100];
     uint total_ruleset;
     total_ruleset = load_rulesets(ruleset);
-    printf("total_ruleset: %d\n", total_ruleset);
+    printf("loaded ruleset: %d\n", total_ruleset);
 
-    for (i = 0; i < total_ruleset; i++) {
-        printf("rule %d:\t", i);
-        ruleset[i](NULL, current, current, NULL);
+    moves = calculate_moves(board, current, ruleset, total_ruleset, &n_moves);
+    printf("possible moves: %d\n", n_moves);
+
+    for (i = 0; i < n_moves; i++) {
+        board[moves[i].y * 8 + moves[i].x] = AVAIABLE;
+        printf("\t(%d %d)\n", moves[i].x, moves[i].y);
     }
-
-    // calculate_moves(board, current, ruleset, moves, &n_moves);
-    // printf("%d\n", n_moves);
-    // for (i = 0; i < n_moves; i++) {
-    //     printf("%d %d\n", moves[i].y, moves[i].x);
-    // }
     return 0;
 }

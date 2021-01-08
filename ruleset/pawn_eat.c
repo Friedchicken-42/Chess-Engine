@@ -1,11 +1,6 @@
-#include <stdio.h>
-
 #include "engine.h"
 
 EXPORT char rule(char *board, Pos curr, Pos *moves, char *offset) {
-    printf("pawn_eat\n");  // debug print
-    return 0;
-
     uint position;
     position = curr.y * 8 + curr.x;
 
@@ -14,15 +9,19 @@ EXPORT char rule(char *board, Pos curr, Pos *moves, char *offset) {
     Pos p;
 
     if ((board[position] & PIECE) == PAWN) {
-        if (board[position] & WHITE) {
-            p.y = curr.y - 1;
-            for (i = 0; i < 2; i++) {
-                p.x = curr.x + side_pos[i];
-                if (check_position(board, p) == 0 && board[p.y * 8 + p.x] & BLACK) {
+        for (i = 0; i < 2; i++) {
+            if (board[position] & WHITE) {
+                p.y = curr.y - 1;
+            } else if (board[position] & BLACK) {
+                p.y = curr.y + 1;
+            }
+            p.x = curr.x + side_pos[i];
+            if (check_position(board, p) == 0) {
+                if (board[position] & WHITE && board[p.y * 8 + p.x] & BLACK || board[position] & BLACK && board[p.y * 8 + p.x] & WHITE) {
                     memcpy(&moves[*offset], &p, sizeof(Pos));
+                    (*offset)++;
                 }
             }
-        } else if (board[position] & BLACK) {
         }
     }
     return 0;

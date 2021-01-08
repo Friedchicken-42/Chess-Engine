@@ -63,19 +63,18 @@ uint load_rulesets(RULE *ruleset) {
     return offset;
 }
 
-char calculate_moves(char *board, Pos curr, void *ruleset, Pos *moves, char *offset) {
-    if (board == NULL) return 0;
-    if (board[curr.y * 8 + curr.x] & FULL == 0) return 0;
+Pos *calculate_moves(char *board, Pos curr, RULE ruleset[100], uint total_ruleset, char *offset) {
+    if (board == NULL) return NULL;
+    if (board[curr.y * 8 + curr.x] & FULL == 0) return NULL;
 
-    switch (board[curr.y * 8 + curr.x] & PIECE) {
-        case PAWN:
-            // pawn_move(board, curr, moves, offset);
-            // pawn_first_move(board, curr, moves, offset);
-            // pawn_eat(board, curr, moves, offset);
-            break;
+    Pos *moves;
+    moves = malloc(sizeof(Pos) * 100);
 
-        default:
-            break;
+    uint i;
+
+    for (i = 0; i < total_ruleset; i++) {
+        ruleset[i](board, curr, moves, offset);
     }
-    return 1;
+
+    return moves;
 }
